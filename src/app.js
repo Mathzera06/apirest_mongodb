@@ -1,6 +1,7 @@
 import express from "express";
 import db from "./configDB/dbConnect.js";
 import livros from "./models/livro.js";
+import routes from "./routes/index.js"
 
 db.on("erro", console.log.bind(console, 'Erro de conexão'));
 db.once("open", () => {
@@ -9,7 +10,11 @@ db.once("open", () => {
 
 const app = express();
 
-app.use(express.json()); //Usado para que o express entenda que a requisição será em JSON e consiga interpretar e consiga transformar
+app.use(express.json());
+
+routes(app);
+
+//Usado para que o express entenda que a requisição será em JSON e consiga interpretar e consiga transformar
 // em um objeto (MÉTODOS POST E PUT)
 
 // const livros = [
@@ -24,10 +29,10 @@ app.use(express.json()); //Usado para que o express entenda que a requisição s
 // ];
 
 
-app.get('/', (req, res) => {
-    res.status(200);
-    res.send('Curso de NodeJS');
-});
+// app.get('/', (req, res) => {
+//     res.status(200);
+//     res.send('Curso de NodeJS');
+// });
 
 app.get('/livros/:id', (req, res) => {
     var index = buscaLivro(req.params.id);
