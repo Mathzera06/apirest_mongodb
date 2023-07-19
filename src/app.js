@@ -34,43 +34,39 @@ routes(app);
 //     res.send('Curso de NodeJS');
 // });
 
-app.get('/livros/:id', (req, res) => {
-    var index = buscaLivro(req.params.id);
-    res.status(200);
-    res.json(livros[index]);
-});
+// app.get('/livros/:id', (req, res) => {
+//     var index = buscaLivro(req.params.id);
+//     res.status(200);
+//     res.json(livros[index]);
+// });
 
-app.get('/livros', async (req, res) => {
-    try{
-        const livrosResultado = await livros.find();
-        res.status(200).json(livrosResultado)
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+// app.get('/livros', async (req, res) => {
+//     try{
+//         const livrosResultado = await livros.find();
+//         res.status(200).json(livrosResultado)
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// });
 
-app.post('/livros', (req, res) => {
-    livros.push(req.body);
-    res.status(201).send('Livro cadastrado');
-});
+// app.post('/livros', (req, res) => {
+//     livros.push(req.body);
+//     res.status(201).send('Livro cadastrado');
+// });
 
-app.put('/livros/:id', (req, res) => {
-    var index = buscaLivro(req.params.id);
-    livros[index].titulo = req.body.titulo;
-    res.status(200);
-    res.json(livros);
-});
+// app.put('/livros/:id', (req, res) => {
+//     var index = buscaLivro(req.params.id);
+//     livros[index].titulo = req.body.titulo;
+//     res.status(200);
+//     res.json(livros);
+// });
 
-app.delete('/livros/:id', (req, res) => {
-    let {id} = req.params;
-    let index = buscaLivro(id);
-    livros.splice(index, 1);
-    res.status(200);
-    res.send('Livro excluido com sucesso')
-});
-
-function buscaLivro(id) {
-    return livros.findIndex(livro => livro.id == id)
-}
+// app.delete('/livros/:id', (req, res) => {
+//     let {id} = req.params;
+//     let index = buscaLivro(id);
+//     livros.splice(index, 1);
+//     res.status(200);
+//     res.send('Livro excluido com sucesso')
+// });
 
 export default app
