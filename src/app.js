@@ -1,12 +1,11 @@
 import express from "express";
 import db from "./configDB/dbConnect.js";
-import livros from "./models/livro.js";
-import routes from "./routes/index.js"
+import routes from "./routes/index.js";
 
-db.on("erro", console.log.bind(console, 'Erro de conexão'));
+db.on("erro", console.log.bind(console, "Erro de conexão"));
 db.once("open", () => {
-    console.log("Conexão com o banco feita com sucesso")
-})
+  console.log("Conexão com o banco feita com sucesso");
+});
 
 const app = express();
 
@@ -69,4 +68,4 @@ routes(app);
 //     res.send('Livro excluido com sucesso')
 // });
 
-export default app
+export default app;
