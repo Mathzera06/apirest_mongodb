@@ -9,7 +9,7 @@ router.post("/autores", AutorControllers.cadastrarAutor);
 
 router.put("/autores/:id", AutorControllers.atualizarAutor);
 
-router.get("/autores/:id", AutorControllers.listarAutoresPorId);
+router.get("/autores/:id", AutorControllers.listarAutorPorId);
 
-router.delete("/autores/:id", AutorControllers.deletarAutor);
+router.delete("/autores/:id", AutorControllers.excluirAutor);
 export default router;
