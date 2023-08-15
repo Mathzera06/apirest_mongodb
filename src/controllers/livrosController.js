@@ -1,5 +1,5 @@
 import NaoEncontrado from "../erros/NaoEncontrado.js";
-import { livros }  from "../models/index.js";
+import { autores, livros }  from "../models/index.js";
 
 class LivroController {
   static listarLivros = async (req, res, next) => {
@@ -75,20 +75,53 @@ class LivroController {
 
   static listarLivroPorFiltro = async (req, res, next) => {
     try {
-      const { editora, titulo } = req.query;
+      const busca = await processaBusca(req.query);
+      if(busca !== null){
+        const livrosResultado = await livros
+          .find(busca)
+          .populate("autor");
 
-      const busca = {};
-
-      if(editora) busca.editora = editora;
-      if(titulo) busca.titulo = titulo;
-
-      const livrosResultado = await livros.find(busca);
-
-      res.status(200).send(livrosResultado);
+        res.status(200).send(livrosResultado);
+      }else{
+        res.status(200).send([]);
+      }
     } catch (erro) {
       next(erro);
     }
   };
+}
+
+async function processaBusca(parametros){
+  const { editora, titulo, minPaginas, maxPaginas, nomeAutor } = parametros;
+
+  //const regex = new RegExp(titulo, "i");
+
+  let busca = {};
+
+  if(editora) busca.editora = editora;
+  if(titulo) busca.titulo = { $regex: titulo, $options: "i" }; //a letra I serve para que ao realizar uma busca, independente se a letra for maiuscula ou 
+  //minuscula, ele irá procurar.
+
+  if(minPaginas || maxPaginas) busca.numeroPaginas = {};
+
+  //gte = Greater Than or Equal
+  if(minPaginas) busca.numeroPaginas.$gte = minPaginas;
+  //lte = Less Than or Equal
+  if(maxPaginas) busca.numeroPaginas.$lte = maxPaginas;
+
+  if(nomeAutor){
+    const autor = await autores.findOne({ name: nomeAutor });
+
+    if(autor !== null){
+      const autorId = autor._id;
+
+      busca.autor = autorId;
+    }else{
+      busca = null;
+    }
+  }
+
+  return busca;
 }
 
 export default LivroController;
